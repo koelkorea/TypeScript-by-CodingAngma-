@@ -36,7 +36,8 @@ user.gender = "male";     // 도중에 추가해도 아무 문제 없음
 console.log(user.age);
 
 //---------------------------------------------------------------------------------------------------------------------
-// ex) 함수를 통한 interface 예시 : () 안의 내용은 파라미터의 타입 의미,  그 밖은 결과물의 타입 의미
+// ex) 함수 표현식를 통한 interface 예시 : () 안의 내용은 파라미터의 타입 의미,  그 밖은 결과물의 타입 의미
+//  -> 굳이 인터페이스가 없더라도 함수 선언(function)는 정의 가능하다는거 잊지 말자
 
 interface Add {
   (num1 : number, num2 : number) : number;    // 함수 Add의 파라미터 num1, num2는 타입이 number, return값은 타입이 number임을 의미
@@ -67,7 +68,7 @@ interface Car {
   start() : void;
 }
 
-// 상단의 Car 인터페이스 구현 
+// 1) 상단의 Car 인터페이스 구현 
 class Bmw implements Car {
   color;
   wheels = 4;
@@ -88,7 +89,7 @@ console.log(greenCar);
 greenCar.start();
 
 
-// 인터페이스의 확장 : 확장한 인터페이스는 선조의 프로퍼티가 다 있어야 함
+// 2) 인터페이스의 확장 : 확장한 인터페이스는 선조의 프로퍼티가 다 있어야 함
 interface Benz extends Car {
   door : number;
   stop() : void;
@@ -107,7 +108,7 @@ const benz : Benz = {
   }
 }
 
-// 복수의 인터페이스 동시 확장
+// 3) 복수의 인터페이스 동시 확장
 interface Toy {
   name : string;
 }
