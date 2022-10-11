@@ -28,7 +28,7 @@
 //      : npm install -g ts-node
 
 //  4. 실행법
-//    1) JS로 컴파일 -> html에 붙이거나 node.js에서 실행
+//    1) JS로 컴파일 ex) tsc hello.ts -> html에 붙이거나 node.js에서 실행
 //    2) ts-node로 실행   ex) ts-node hello.ts
 //    3) https://www.typescriptlang.org/ 에서 실행해본다..
 
@@ -40,4 +40,5 @@ function showItems(arr:number[]){   // 파라미터에 변수타입 명시
   });
 }
 
-showItems([1,2,3]);
+// showItems(1,2,3);   // 배열이 아닌 경우는 컴파일 단계에서 에러  
+showItems([1,2,3]); 
