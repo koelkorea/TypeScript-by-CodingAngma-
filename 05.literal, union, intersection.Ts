@@ -1,7 +1,5 @@
 // [TypeScript Literal, Union, Intersection Type]
 
-import { getImpliedNodeFormatForFile } from "typescript";
-
 //  - Literal Type
 //      : 리터럴 타입은 변수 혹은 매개변수 등이 string이나 number 처럼 어떠한 포괄적인 타입을 가지는 것이 아니라 변수나 매개변수에 마치 const처럼 정확한 값을 설정하는 것을 의미
 //        (그러니까 TS에서는 JS처럼 타입정의 없이 변수에 값을 할당해 버리면, let도 const처럼 되어버림)
