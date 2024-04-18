@@ -520,12 +520,7 @@
 
                   @ Intersection Type (교차 타입) ( & )
                       : TypeScript에서 AND을 의미하는 연산자로 '&' 기호, 
-                          -> 이를 통해 특정 변수의 타입이 interface의 형식을 참고할 때, 다양한 interface의 형식을 전부 만족 가능
-                              -> BUT! 언급된 interface의 모든 프로퍼티가 들어가야 에러가 안 생김
-
-                                 ex) let example : Toy & Car = { Toy 객체 interface, Car 객체 프로퍼티들이 interface 전부 포함되어야 함 };  
-                                       -> 복수의 인터페이스 동시 확장할 때 쓰는 interface 인터페이스명 extends 인터명1, 인터명2;를 통해서도 비슷한걸 구현 가능하다
-
+                          -> 이를 통해 특정 변수가 참조하는 자료형에 AND조건을 가미하여, 다양한 임의 자료형으로 조합하여 선언이 가능함
 
     3. JS객체(class나 interface도 포함!) 자료형의 내부 멤버들의 상수화 기능
         : const는 변수에 원시 자료형이 들어가면, 상수화를 잘 유지하나.. 객체의 멤버변수에는 해당이 안된다는 슬픈 전설이 있음
@@ -678,7 +673,49 @@
         : 어떤 객체의 추상적인 명세서에 해당하는 interface문법을 JS기반 언어에서도 사용이 가능!
 
          # (참고) TypeScript에서 인터페이스(interface) 문법을 쓰는 이유?
-            : 간단하게, 이 문법 하나로 변수에 JS객체(object), 함수 표현식(function expression), 클래스(class) 구조를 설계하고 선언할 때, 이걸로 다 퉁치는게 가능하기 때문
+
+            a. Type Aliases에 비해 용도가 확실함
+                : Type Aliases와 유사하지만, 이 문법 하나로 변수에 JS객체(object), 함수 표현식(function expression), 클래스(class) 구조에 한해서 설계하고 선언할 때, 이걸로 다 퉁치는게 가능하기 때문
+   
+            b. 제한적이나마 객체지향과 유사한 '확장(extend)', '구현(implements)'를 사용 가능
+                : 개발자 입장에서 js객체나 class 자료형 관적인 이해 + 상대적으로 엄격한 Type Aliases에 비해 유연함을 가지고 코드 운영이 가능
+                    -> BUT! 때떄로 엄격한 검열이 더 중요할 수 있다는 점에서 Type Aliases와 경쟁관계 X, 보완관계 O
+
+
+         # 인터페이스(interface) 문법 VS Type Aliases(별칭) 문법
+            - 공통점 
+               : readonly, '?' 연산자, '&' 연산자 사용 가능
+
+            - 차이점 
+               1) 일반 자료형 선업 가능 범위 
+                   -> interface    : 사용자 정의 자료형이지만, JS객체 리터럴(object literal), 함수 표현식(function expression)의 자료형에 사용가능
+                   -> Type Aliases : 모든 자료형을 베이스로 포괄적인 자료형을 생성이 가능함
+
+               2) 변수의 '재정의' 가능?
+                   -> interface    : 가능 (중복시 extends 한 것이랑 동일하게 유연히 동작)
+                     
+                      ex) interface명 재정의시, 이전 내용에 +@를 한 유연한 효과가 남 
+                          (= interface Animal extends Animal 한 것과 같이, name과 legs속성을 Animal이란 interface는 가지게 됨)
+                      
+                          interface Animal { 
+                            name :string 
+                          } 
+                          
+                          interface Animal { 
+                            legs :number 
+                          }
+
+                   -> Type Aliases : 불가능
+
+                      ex) type Name = string;
+                          type Name = number;   <- 일반 변수들처럼 타입별칭명도 같은 이름으로 재정의 불가능함
+
+               3) 확장을 위한 extend, class로의 구현을 위한 implements
+                   -> interface    : 가능
+                   -> Type Aliases : 불가능
+
+               4)
+            
 
          # 인터페이스(interface) 선언 & 자료형으로 사용하는 문법
             1) 사용자 정의 JS객체(object) 리터럴 형식 인터페이스(interface)
@@ -708,7 +745,6 @@
                           2 : 'B'
                         }
 
-
             2) 함수 표현식(function expression) 형식 인터페이스(interface)
 
                - 함수 표현식(function expression) 인터페이스(interface) 선언
@@ -729,73 +765,168 @@
                         
                         add(10, 20);
 
-
-         # (중요) interface 내용 확장시 사용하는 extends, class 구현시 사용하는 implements 예약어
+         # (중요) interface 내용 확장시 사용하는 extends & class 구현시 사용하는 implements 예약어
          
-            1) 
+            1) extends
+                : 작성된 interface를 상속하여, 그 interface들에 존재하는 자료형들만 존재하는 프로퍼티와 추상 메서드들을 기반으로 다른 interface로 '확장'하는 예약어
 
+                  @ (중요) extends 관련 주의사항
+                     a. class와 다르게, interface를 선언시에는 2중 동시상속을 쓸 수 있음
 
+                     b. 확장한 interface는 extends로 가져간 선조 interface의 프로퍼티들을 다 가지게 됨
+                        (= 확장한 interface를 자료형으로 선언한 JS객체 리터럴을 받는 변수는 선조의 프로퍼티, 메서드 또한 다 가지고 있어야 함)
 
-         # 인터페이스(interface) 문법 VS Type Aliases(별칭) 문법
+                     c. (중요!) extends를 쓸 떄, 확장한 interface가 선초 interface의 프로퍼티를 중복해서 가지고 있으면? 짤 없이 에러남
+                         -> '&' 연산자와의 중대한 차이이며, 조금 더 중복에 대해 엄격!
+                  
+                  ex) 예시를 위해 선언된 interface (= 이걸로 extends들의 예시를 들 예정)
 
-            - 인터페이스(interface) 문법
-               1) 관련 자료형 범위 
-                   : 사용자 정의 자료형이지만, JS객체 리터럴(object literal), 함수 표현식(function expression)의 자료형에 사용가능
-                      -> 클래스(class)의 경우는 implements 키워드를 통한 interface의 구현에 사용가능함
+                      interface Car {
+                        color : string;
+                        wheels : number;
+                        start() : void;
+                      }
 
-               2) 인터페이스 변수 '재정의' 가능?
-                   : 가능
+                      interface Toy {
+                        name : string;
+                      }
 
-            - Type Aliases(별칭) 문법
-               1) 관련 자료형 범위 
-                   : 모든 자료형을 베이스로 포괄적인 자료형을 생성이 가능함
+                  ex) 단일 interface의 상속 사례에 해당하는 Benz라는 interface
 
-               2) 인터페이스 변수 '재정의' 가능?
-                   : 불가능
-            
-                   ex) type Name = string;
-                       type Name = number;   <- 일반 변수들처럼 타입별칭명도 같은 이름으로 재정의 불가능함
+                      // Car라는 interface를 상속받아 확장한 Benz라는 interface
+                      interface Benz extends Car {
+                        door : number;
+                        stop() : void;
+                      }
+                      
+                      const benz : Benz = { 
+                        color : 'red',
+                        wheels : 4,
+                        start(){
+                          console.log('gogo');
+                        },
+                        door : 5,
+                        stop(){
+                          console.log('stop');
+                        }
+                      }
+
+                  ex) 복수의 interface를 상속하는 사례에 해당하는 ToyCar라는 interface
+
+                      // car와 toy의 동시에 상속받은 ToyCar라는 interface (두 인터페이스의 프로퍼티, 메서드를 전부 가져야 함)
+                      interface ToyCar extends Car, Toy {   
+                        price : number;
+                      }
+                      
+                      const toyCar : ToyCar = {
+                        color : 'blue',
+                        wheels : 4,
+                        start(){
+                          console.log('gogo');
+                        },
+                        name : "toycar",
+                        price : 111,
+                      }
+
+                  ex) 선조 interface Toy의 프로퍼티 name을 중복해서 가지는 errorToy라는 interface
+                       -> 짤 없이 TypeScript 컴파일러가 에러를 잡음
+
+                          interface errorToy extends Toy {
+                            name : string;   <- Toy도 가지고 있는 프로퍼티
+                            useless : null;
+                          }
+
+            2) implements
+                : 작성된 interface를 기반으로, 그 interface들에 존재하는 자료형들만 존재하는 프로퍼티와 추상 메서드들을 기반으로 다른 class로 '구현'하는 예약어
+
+                  @ (중요) implements 관련 주의사항
+                     a. class에다가만 사용가능
+                     b. class를 선언시에 interface를 구현하게 된다면, 복수상속이 불가능함
+                     c. 구현한 class 역시, implements로 구현에 사용한 interface의 프로퍼티들을 다 가지게 됨
+                        (= 구현한 class 생성자를 이용해서 생성한 JS객체를 받는 변수는 선조의 프로퍼티, 메서드 또한 다 가지고 있어야 함)
+
+                  ex) 예시를 위해 선언된 interface 
+
+                      interface Car {
+                        color : string;
+                        wheels : number;
+                        start() : void;
+                      }
+
+                  ex) Car interface를 구현한 Bmw라는 class  
+
+                      interface Car {
+                        color : string;
+                        wheels : number;
+                        start() : void;
+                      }
+
+                      // 상단의 Car 인터페이스 class로 구현 
+                      class Bmw implements Car {
+                        color;
+                        wheels = 4;
+                      
+                        // 생성자 구현
+                        constructor(c : string){
+                          this.color = c;
+                        }
+                      
+                        start() {
+                          console.log('부릉부릉');
+                        }
+                      
+                      }
 
          # 인터페이스(interface)와 연관된 연산자
             : Type Aliases(별칭)에서 쓰는 내용과 유사하나, 한편으로는 확장성이 넓다고도 볼 수 있음
 
              1) '변수명?' (= '변수명 : number | undefined' 와 같은 의미)
-                : 어떤 함수(function)의 parameter or js객체형식의 자료형의 멤버변수가 자리는 있으나, 그것이 있어도 그만 없어도 그만임을 나타내고 싶은 경우 '변수명?' 이렇게 작성
+                : 어떤 interface의 멤버변수가 자리는 있으나, 그것이 있어도 그만 없어도 그만임을 나타내고 싶은 경우 '변수명?' 이렇게 작성
                     -> JS객체 형식의 자료형을 정의시에는 굳이 '?' 연산자가 붙는 멤버변수를 뒤로 둘 필요는 없음
                         -> BUT! 나중에 생성자(constructor) 함수까지 연관되는 class 자료형이 등장한다면? 이야기는 달라짐
     
                        ex) Square라는 JS객체 형식의 자료형에는 color라는 멤버변수가 있던 없던 상관이 없음
                        
-                           type Square = {
-                             color? : string,
-                             width : number,
+                           interface User {
+                             name : string;
+                             age : number;
+                             gender? : string;             // gender의 경우는 User를 실제 구현할때 없어도 그만이다
+                             readonly birthYear : number;  // readonly 속성이 붙은 녀석은 구현 후 값 수정이 불가함
+                             [grade : number] : Score;     // 선언해둔 type에 해당하는 값을 타입으로 지정 가능     ex) 숫자 : Score의 문자열만 가능;
                            }
                            
-                           let 네모2 :Square = { 
-                             width : 100 
+                           let user : User = {
+                             name : 'xx',
+                             age : 30,
+                             birthYear : 2000,
+                             1 : 'A',
+                             2 : 'B'
                            }
+
+                           user.age = 10;
+                           user.gender = "male";     // 도중에 추가해도 아무 문제 없음
  
-             2) type 타입별칭명 = JS객체타입별칭명1 & JS객체타입별칭명2
-                 : '&' 연산자를 사용하여 연산되는 객체인 2개의 타입별칭명이 전부 JS객체 자료형이면?
-                     -> 두 객체타입별칭의 멤버변수를 전부 결합하여 확장된 새로운 JS 객체형식을 새로 생성되는 타입별칭에 저장되는 자료형으로 정의함
+             2) let 변수 : 인터페이스명1 & 인터페이스명2 = { 인터페이스1프로퍼티 : '값', ... , 인터페이스2프로퍼티 = '값'}
+                 : interface를 자료형으로 받는 JS객체 리터럴을 저장하는 변수의 경우, '&' 연산자를 사용하면 2개의 interface를 동시상속 확장하여 extends 선언된 interface를 자료형을 받는듯한 효과를 얻을 수 있음
+                    -> (중요!) '&'를 통한 유사 2중 동시상속 또한 extends와 비슷하기에, 인터페이스명1과 인터페이스명2의 '프로퍼티(멤버변수, 메서드)'를 중복해서 가지고 있으면? 짤 없이 에러남
+
+
+                        ex) interface Student와 Teacher의 모든 프로퍼티를 가지는 interface 자료형을 참고한 JS객체 리터럴의 참조값을 가지는 '교직원'라는 이름의 변수
+                             -> (참고) 복수의 인터페이스 동시 확장할 때 쓰는 interface 인터페이스명 extends 인터명1, 인터명2;를 통해서도 비슷한걸 구현 가능
+                                 -> (중요!) 역시! 언급된 interface의 모든 프로퍼티가 들어가야 에러가 안 생김
  
-                        ex) PositionX, PositionY라는 JS객체 형식 자료형에 대해 저장한 타입별칭들의 멤버변수 x, y 모두를 결합하여 확장 정의한 자료형을 저장하는 XandY 탄생
-                             -> (참고) type 타입별칭명 = JS객체타입별칭명1  & { name : string } 형식으로도 작성 가능
- 
-                             type PositionX = { x: number };
-                             type PositionY = { y: number };
- 
-                             type XandY = PositionX & PositionY   <-  type XandY = { x: number } & { y: number }로도 정의가능
- 
-                             let 좌표 :XandY = { x : 1, y : 2 }
+                                     interface Student {
+                                       name :string,
+                                     }
+        
+                                     interface Teacher {
+                                       age :number
+                                     }
+                                     
+                                     let 교직원 : Student & Teacher = { name : 'kim', age : 90 }
  
                    @ Intersection Type (교차 타입) ( & )
                        : TypeScript에서 AND을 의미하는 연산자로 '&' 기호, 
-                           -> 이를 통해 특정 변수의 타입이 interface의 형식을 참고할 때, 다양한 interface의 형식을 전부 만족 가능
-                               -> BUT! 언급된 interface의 모든 프로퍼티가 들어가야 에러가 안 생김
- 
-                                  ex) let example : Toy & Car = { Toy 객체 interface, Car 객체 프로퍼티들이 interface 전부 포함되어야 함 };  
-                                        -> 복수의 인터페이스 동시 확장할 때 쓰는 interface 인터페이스명 extends 인터명1, 인터명2;를 통해서도 비슷한걸 구현 가능하다
 
 
  - TypeScript로 HTML을 조작할 시 에러나면 주의할 사항
