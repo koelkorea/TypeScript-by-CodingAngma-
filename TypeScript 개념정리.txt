@@ -156,11 +156,20 @@
                          - 타입명[]      : 특정 '자료형'만 허용하는 '배열' 1    ex) let num : number[] = [1,2,3];
                          - Array<타입명> : 특정 '자료형'만 허용하는 '배열' 2    ex) let week2 : Array<string> = ['mon', 'tues', 'weds']; 
 
-                   B. 사용자 지정 JS객체(Object literal)
+                   B. 사용자 지정 JS객체(Object literal Type)
                        : {}안에 개별 멤버변수(property)들의 자료형이 선언된 'JS객체 리터럴' 형식만 변수에 허용
 
-                          @ (참고) 리터럴(literal)
-                             : 사람이 이해할 수 있는 문자나 약속된 기호를 사용해 값을 생성하는 표기법   
+                          @ (참고) 리터럴(literal) 관련 개념들
+                            1. 리터럴(literal)
+                               : 사람이 이해할 수 있는 문자나 약속된 기호를 사용해 값을 생성하는 표기법   
+
+                            2. (중요!) 객체 리터럴 자료형(object literal type)과 여기서 말하는 리터럴 자료형(literal type)은 개념적으로 거의 상관관계가 없다봐도 무방함
+                               : 리터럴 타입은 특정 값에 대한 제약을 주는 데 사용되고, 객체 리터럴 타입은 객체의 구조를 정의하고 검증하는 데 사용됩니다.
+                                   -> JS객체 리터럴 자료형(object literal type)
+                                       : TypeScript에서 JS객체의 '구조'를 정의하는 데이터 자료형을 의미
+
+                                   -> 리터럴 자료형(literal type) 
+                                       : 문자열, 숫자, 불리언 중에서도 특정한 값이 자료형 그 자체로 '제약'되는 경우의 자료형을 의미
 
                          - 객체명 : { 멤버변수1 : 자료형 , ... , 멤버변수n : 자료형} = { 멤버변수1 : 값1 , ... ,  멤버변수n : 값n}
                              : 멤버변수들에 직접 자료형을 대입한 무명의 JS객체 리터럴(object literal) 형식 자료형을 직접 기입, 그에 맞는 값들을 즉석에서 대입
@@ -376,17 +385,49 @@
 
             7) 리터럴 자료형(= Literal Type)
                 : 사용자가 설정한 '특정 글자나 숫자'들만 가질 수 있게 정확한 값으로 제한을 두도록 설정한, const 변수의 업그레이드와 같은 자료형
+                  (typescript 컴파일러가 해당 값에 해당하는 값만 받도록 검열)
+                    -> JS객체 또한 내부 프로퍼티 값을 리터럴 자료형(= Literal Type)으로 사용 가능함!  
 
-                   ex) let userName2 : 'Tim';       <- 변수 userName2에는 'Tim'이라는 문자열만 값으로 받을 수 있게 typescript 컴파일러가 검열함
+                   @ (참고) 리터럴 자료형(= Literal Type) 예시  
+
+                      a. 기본 리터럴 자료형(primitive Literal types)
+                          : JS 변수에 자료형으로 구체적으로 지정된 값을 넣을 경우의 typescript 컴파일러가 해당 값에 해당하는 값만 받도록 검열하는 자료형을 의미
+
+                            ex) let userName2 : 'Tim';       <- 변수 userName2에는 'Tim'이라는 문자열만 값으로 받을 수 있게 조치
+
+
+                      b. JS객체 내부의 프로퍼티에 리터럴 자료형(Literal types) 사용
+                          : JS 변수에 자료형으로 JS객체를 설정하고, 그 속성(프로퍼티)에 구체적으로 지정된 값을 넣을 경우에 typescript 컴파일러가 해당 값에 해당하는 값만 받도록 검열하는 자료형을 의미
+                             -> 이와 같이 객체의 특정 속성명의 자료형을 fix하는 경우, 이를 Narrowing 작업에 유용하게 쓸 수 있음
+                          
+                                ex) let teacher : {
+                                      name : string,
+                                      age : 4
+                                    } = { name : 'john' }    <- 해당 객체의 age는 4라는 명칭의 자료형으로 고정
+                
+                                ex) type 사람 = {
+                                      name : string,
+                                      age : 4
+                                    }
+                
+                                    let teacher : 사람 = { name : 'john' } 
 
                    @ (참고) 리터럴 자료형(= Literal Type) 참고 사항
 
-                      a. (중요!) 유니언 자료형(= Union type)과 연계하여, 사용자가 해당 변수에 입력가능한 값을 2개 이상으로 늘리는 것도 가능함
+                      a. (중요!) 객체 리터럴 자료형(object literal type)과 여기서 말하는 리터럴 자료형(literal type)은 개념적으로 거의 상관관계가 없다봐도 무방함
+                           : 리터럴 타입은 특정 값에 대한 제약을 주는 데 사용되고, 객체 리터럴 타입은 객체의 구조를 정의하고 검증하는 데 사용됩니다.
+                               -> JS객체 리터럴 자료형(object literal type)
+                                   : TypeScript에서 JS객체의 '구조'를 정의하는 데이터 자료형을 의미
+    
+                               -> 리터럴 자료형(literal type) 
+                                   : 문자열, 숫자, 불리언 중에서도 특정한 값이 자료형 그 자체로 '제약'되는 경우의 자료형을 의미
+
+                      b. (중요!) 유니언 자료형(= Union type)과 연계하여, 사용자가 해당 변수에 입력가능한 값을 2개 이상으로 늘리는 것도 가능함
                            -> 해당 부분이 const와의 결정적인 차이점!
 
                           ex) let 방향: 'left' | 'right';  <- 변수 '방향'은 left, right라는 문자열만 받을 수 있으며, 수정도 가능한 상태가 됨!
 
-                      b. 함수(function)에서 자료형을 설정해야 하는 parameter들이나 return값에도 리터럴 자료형(= Literal Type)의 지정이 가능함
+                      c. 함수(function)에서 자료형을 설정해야 하는 parameter들이나 return값에도 리터럴 자료형(= Literal Type)의 지정이 가능함
 
                           ex) '함수'라는 function의 parameter인 'a'는 'hello'라는 문자열만 받을 수 있고, return값은 (1 | 0 | -1)라는 문자열만 받을 수 있는 리터럴 자료형(= Literal Type)에 해당
                          
@@ -394,7 +435,7 @@
                                  return 1 
                                }
 
-                      c. 함수를 선언할 때 써버리면 함수로서 기능이 불가능하니.. 잘못쓰는 일이 없도록 주의
+                      d. 함수를 선언할 때 써버리면 함수로서 기능이 불가능하니.. 잘못쓰는 일이 없도록 주의
                            -> 보통, TS에서 객체 선언시 그 멤버들의 자료형을 결정할 때 사용하는 type 변수에 익숙지 않은 경우, 기존 JS의 문법을 써놓고 본인은 자료형 지정을 했다고 착각하는 일이 있는데 그러지 말도록 하자
 
                               ex) '자료'라는 객체는 type으로 선언된게 아니라서 자료형이 지정된게 아니라, name이란 변수에 kim이라는 값이 들어가고 TS의 타입 추론(Type Inference)으로 string으로 지정됨
@@ -407,6 +448,27 @@
                                             
                                             function 내함수(a : 'kim') { return a };    <- a의 자료형은 'kim'으로 지정
                                             내함수(자료.name);
+
+                      e. JS 객체 내부 속성(프로퍼티)에 리터럴 자료형(objective Literal types)을 사용하는 경우, Type Narrowing(자료형 좁히기)를 통한 조건문 작성에 있어 큰 도움이 될 수 있음
+                          -> (중요) 사용자 정의를 통해 만들어진 자료형은 typeof 연산자를 통해 자료형을 도출해봐야 object 타입으로만 나오기 때문..
+
+                              ex) type Car = {
+                                    wheel : '4개', 
+                                    color : string
+                                  }
+
+                                  type Bike = {
+                                    wheel : '2개',
+                                    color : string
+                                  }
+                                  
+                                  function 함수(x : Car | Bike){
+                                    if (x.wheel === '4개'){
+                                      console.log('the car is ' + x.color)
+                                    } else {
+                                      console.log('the bike is ' + x.color)
+                                    }
+                                  }
 
             8) Type Aliases(별칭) 문법으로 생성된 자료형
                 : Type Aliases(별칭) 문법을 사용하여, 사용자 정의로 생성된 자료형
@@ -569,9 +631,215 @@
         : function 함수명(파라미터명1 : 자료형, ... , 파라미터명n : 자료형) : 자료형 { 표현식 내용 };
            -> 함수 선언시 parameter들과 return값의 자료형을 지정해주는 것이 가능
 
-         # void
-            : 함수 return값의 타입으로 지정할 수 있는 자료형으로 return할 자료가 없는 함수의 경우 해당 자료형을 사용함
-              (= void를 쓸거면, 함수에 return을 쓸 생각 하지마라)
+         # (중요!) parameter에 적용하는 응용 문법과 typescript 정리
+         
+            1) rest parameter(나머지 매개변수)를 typescript에 적용
+                : function 함수명(...rest파라미터명 : 자료형[]){ 표현식 내용 }
+    
+                  ex) function 전부더하기(...a : number[]) {
+                        let x = 0;
+                      
+                        for (let i in a) {
+                          console.log(a[i]);
+                          x += a[i];
+                        }
+                      
+                        return x;
+                      }
+                      
+                      console.log(전부더하기(1, 2, 3, 4, 5));
+    
+                 @ (응용) 필수적으로 들어가야하며, 갯수가 고정된 일반 parameter와 조합도 가능
+                    : function 함수명(파라미터명1 : 자료형, ... , 파라미터명n : 자료형, ...rest파라미터명 : 자료형[]){ 표현식 내용 }
+                       -> (중요) 필수적으로 들어가야할 parameter들이 먼저 왼쪽에 선언되고, rest parameter가 가장 나중에 선언되어야, 나중에 함수 호출시 인터프리터가 일반 parameter를 구분 가능
+    
+                          ex) function ab만더하고나머지곱해(x : number, y : number , ...c : number[]) {
+                                let xy = x + y;
+                              
+                                for (let i in c) {
+                                  console.log(c[i]);
+                                  xy *= c[i];
+                                }
+                              
+                                return xy;
+                              }
+                              
+                              console.log( xy만더하고나머지곱해(1, 2, 3, 4, 5) );
+               
+                 @ rest parameter(나머지 매개변수) <-> Spread operator(스프레드 연산자)
+                    : 'funcition'에 들어갈 parameter의 개수가 정해지지 않을 경우에 사용하는 parameter 작성 문법
+                       -> 비슷한 용도로 들어갈 paramter들을 '...파라미터명'으로 입력하면, 해당 parameter는 해당 function {}안에서 JS배열로서 받아올 수 있음
+    
+                 @ Spread operator(스프레드 연산자) <-> rest parameter(나머지 매개변수)
+                    : {JS객체}, [JS배열] 내부의 요소로 또 다른 JS객체, JS배열의 요소들을 넣고 싶을 때 사용하는 문법 (JS객체의 Spread operator는 ES2018부터 가능)
+                       -> (중요) Spread operator(스프레드 연산자)를 사용하여 복사된 객체는 깊은 복사되어 원본 객체와 전혀 다른 메모리에 저장됨 (= instance 주소가 다름)
+    
+                            ex) JS배열의 Spread operator
+                          
+                                const arr1 = [0, 1, 2];
+                                const arr2 = [3, 4, 5];
+                                
+                                const arr3 = [...arr1];                // arr3은 [0, 1, 2]
+                                const arr4 = [1, 2, ...arr2, 9, 10];   // arr4는 [1, 2, 3, 4, 5, 9, 10]
+                                const arr5 = [...arr1, ...arr2];       // [0, 1, 2, 3, 4, 5];
+          
+                            ex) JS객체의 Spread operator
+                          
+                                const obj1 = { name: 'John', age: '20' };
+                                const obj2 = { name: 'Tom', age: '23' };
+                                
+                                const clonedObj1 = { ...obj1 };                                // Object { name: 'John', age: '20 }
+                                const mergedObj = { ...obj1, num_of_persons : 2,  ...obj2 };   // Object { name: 'John', age: '20',  num_of_persons : 2, name: 'Tom', age: '23' }
+
+            2) JS객체 or JS배열을 Destructuring(구조분해) 문법을 통해 parameter선언시 typescript에 적용
+
+                a. {JS객체}의 경우
+                    : function 함수명( { property1, ...  , propertyN } : JS리터럴객체 or JS객체타입별칭명 or 인터페이스명 ){ 표현식 내용 }
+                       -> 물론 parameter의 property들에 상응하는 JS객체구조들 만들어놔야 Destructuring(구조분해) 문법이 통함
+    
+                          ex) funcition 선언시 parameter의 자료형으로 'JS리터럴객체'를 선언하는 경우
+
+                               let person = { student : true, age : 20 };
+ 
+                               function 함수({student, age} : {student : boolean, age : number}){
+                                 console.log(student, age);
+                               }
+ 
+                               함수(person);
+
+                          ex) funcition 선언시 parameter의 자료형으로 'JS객체타입별칭명(Type Aliases)'를 선언하는 경우
+
+                               type UserType = {
+                                 user : string,
+                                 comment : number[],
+                                 admin : boolean
+                               }
+
+                               function 함수({user, comment, admin} :UserType) :void{
+                                 console.log(user, comment, admin)
+                               }
+
+                               함수({ user : 'kim', comment : [3,5,4], admin : false }) 
+
+                          ex) funcition 선언시 parameter의 자료형으로 '인터페이스명'를 선언하는 경우
+
+                               interface UserType = {
+                                 user : string,
+                                 comment : number[],
+                                 admin : boolean
+                               }
+
+                               function 함수({user, comment, admin} : UserType) :void{
+                                 console.log(user, comment, admin)
+                               }
+
+                               함수({ user : 'kim', comment : [3,5,4], admin : false }) 
+
+                b. [JS배열]의 경우
+                    : function 함수명( [요소1, ... , 요소n] : JS배열 or JS배열타입별칭명 ){ 표현식 내용 }
+    
+                      ex) funcition 선언시 parameter의 자료형으로 'JS배열'를 선언하는 경우
+                      
+                           function 함수([a,b,c] : (number | string | boolean)[]){
+                             console.log(a,b,c)
+                           }
+                           
+                           함수( [40, 'wine', false] ) 
+
+
+                      ex) funcition 선언시 parameter의 자료형으로 'JS배열타입별칭명(Type Aliases)'를 선언하는 경우
+
+                           type 어레이 = (number | string | boolean)[];
+                           
+                           function 함수([a,b,c] : 어레이){
+                             console.log(a,b,c)
+                           }
+                           
+                           함수( [40, 'wine', false] ) 
+
+                 @ Destructuring(구조분해) 문법
+                    : {JS객체}나 [JS배열]의 내부 요소들을 쉽게 꺼내서, 다른 '생성된 JS변수'에 대입하여 사용하는 ES6(2015)에서 추가된 문법
+                       -> (중요!) 구조분해 구문을 받을 JS변수는 반드시 새로 선언되어야 함!
+
+                           ex) {JS객체} Destructuring(구조분해)  
+                                 : student, age라는 변수에 JS리터럴객체의 동명의 프로퍼티들의 값을 복사해 대입한 효과를 얻을 수 있음
+ 
+                                   let { student, age } = { student : true, age : 20 }
+
+                           ex) {JS배열} Destructuring(구조분해) 
+                                 : a, b라는 변수에 JS배열의 각 인덱스의 값을 복사해 대입한 효과를 얻을 수 있음         
+                               
+                                   let [a, b] = ['안녕', 100]
+
+         # 함수(function)의 return에만 적용 가능한 자료형
+            : (중요!) 보통은 void 자료형만 사용하겠지만, 특정 상황에 never 타입이 강제로 자료형으로 주어지는 경우가 있으니 알아놓는게 좋음
+         
+               1) void
+                  : 함수(function)에서 return할 자료가 없는 함수의 경우 해당 자료형을 사용함
+                    (= void를 쓸거면, 함수에 return을 쓸 생각 하지마라)
+       
+                     ex) function person( name? : string, age : number ) : void { return없는 내용 };
+
+                   @ void 자료형이 자동 할당되는 경우
+                      : 함수 선언문(funcition declaration)이 return문 없이 끝났는데? 자료형이 정의되지 않는 경우
+                       
+                        ex) 해당 함수의 자료형은 void로 자동 할당
+                        
+                            function 함수(){
+                              throw new Error()
+                            }
+    
+               2) never
+                  : 함수(function)에서 return할 자료가 없음 + 해당 함수 {}가 절대로 끝나지 않는 경우 해당 자료형을 사용함
+                    (= void 자료형 + endpoint가 없어 함수{}를 벗어나지 못하는 함수의 경우 적용되는 자료형)
+    
+                     ex) return은 없지만, 함수{}를 벗어날 수 있어 never 자료형 붙이지 못하는 함수 예시
+    
+                         function 함수(){
+                           console.log(123)
+                         }
+    
+                     ex) 반복문 무한루프 (never 자료형에 해당되는 사례1)
+    
+                         function 함수() : never{
+                           while ( true ) {
+                             console.log(123)
+                           }
+                         }
+    
+                     ex) 에러 발생 (never 자료형에 해당되는 사례2)
+    
+                         function 함수() : never{
+                           throw new Error('에러메세지')
+                         }
+
+                   @ never 자료형이 자동 할당되는 경우
+                      : 2, 3 번의 경우는 코드의 논리에 문제가 있음을 알려주는 느낌이니 참고
+
+                        1. 함수 표현식(funcition expression)이 return문 없이 끝났는데? 자료형이 정의되지 않는 경우
+                         
+                            ex) 해당 함수의 자료형은 never로 자동 할당
+                            
+                                let 함수2 = function (){
+                                  throw new Error()
+                                }
+   
+                        2. 함수의 parameter 대상 Type Narrowing(자료형 좁히기) 조건문 처리가 이상한 경우 
+                            -> 이 경우 parameter의 자료힝이 never로 자동 할당
+       
+                               ex) parameter의 자료형이 string 뿐이 못 들어오는 상황인데, else문이 들어온 경우 parameter의 자료형이 never로 할당됨
+                               
+                                   function 함수(parameter : string) {
+                                     if ( typeof parameter === "string"){
+                                       parameter + 1;
+                                     } else {
+                                       parameter;
+                                     }
+                                   }
+
+                        3. tsconfig.json에서 strict 옵션을 켜둘 경우 
+                            -> any타입을 지정하지 못하게 되어, 배열같은 참조 자료형에 자료형 지정을 안 하고 선언하면 never 타입이 등장할 수도 있음
+
 
          # '변수명?' (= '변수명 : number | undefined' 와 같은 의미)
             : 어떤 함수(function)의 parameter or js객체형식의 자료형의 멤버변수가 자리는 있으나, 그것이 있어도 그만 없어도 그만임을 나타내고 싶은 경우 '변수명?' 이렇게 작성
@@ -584,7 +852,7 @@
              -> BUT! 유니언 자료형(= Union type)을 사용 시, 함수 표현식을 진행하다가 해당 parameter나 return값의 어떤 자료형인지 확실해야 진행할 수 있는 기능이나 연산이 발견될 시 TS에서 에러를 뿜을 수 있음
 
                 ex) TypeScript는 '그래서 return에서 변수 x의 자료형은 뭔데? ㅅㅂ 나더러 어쩌라고' 라는 에러를 내뱉음
-                      -> 꼬우면, 함수의 parameter에 따라 동일 함수명의 오버로딩 처리라는 좋은 방법이 존재함
+                      -> 꼬우면, 함수의 parameter의 갯수나 종류에 따라 오버로딩 처리라는 좋은 방법이 존재함
 
                          function 자릿수세기(x :number | string){    <- x의 자료형이 number일떄와 string 일떄의 동일 함수명을 오버로딩해서 선언해주면 에러걱정 안해도 됨
                             return x + 1 
@@ -615,16 +883,138 @@
                                               }
                                            }
 
-                       @ 어떤 변수의 자료형과 연관된 연산자들
-                          1. typeof 변수명
-                              : '변수명'의 자료형이 무엇인지를 반환함
 
-                          2. 객체명 instanceof 클래스명
+                       @ Type Narrowing(자료형 좁히기) 방식과 연관된 자료형 판별 연산자들
+
+                          a. typeof 변수명
+                              : '변수명'의 자료형이 무엇인지를 반환함
+                                  -> (중요!) 해당 변수의 자료형이 기본 자료형(primitive type)인 경우에만 통함
+
+                                ex) function printAll(strs: string | undefined) {
+                                      if (strs && typeof strs === "string") {  
+                                        console.log(s);
+                                      } 
+                                    }
+
+                          b. 객체명 instanceof 클래스명
                               : '객체명'의 자료형이 '클래스명'이거나 해당 '클래스명'을 상속받는 클래스인지 여부를 boolean값으로 반환함 
                                   -> 정확히는 '객체명'의 상속이력을 보여주는 'protoType(프로토타입)' 체인에 해당 '클래스명'이 있는지를 검색해 줌
+                                     (class를 정의하고, 생성자를 통해 생성한 JS객체에만 적용가능)
 
-                          3. '속성명' in 변수명(객체 자료형) 
+                                     ex) let 날짜 = new Date();
+
+                                         if (날짜 instanceof Date){
+                                           console.log('참이에요')
+                                         }
+
+                          c. '속성명(property)' in 변수명(객체 자료형) 
                               : 어떤 '속성명'이 '변수명'이라는 객체 안의 속성으로서 존재하는지 여부를 boolean값으로 반환함 
+                                 -> 서로 배타적인 속성을 가져와야 narrowing이 가능
+                                    (= 공통된 속성명이 있다면 가급적이면 Narrowing에 사용하지 말거나, 엄격한 논리 연산자로 조건을 거는게 좋음)
+
+                                    ex) type Fish = { swim: string };
+                                        type Bird = { fly: string };
+                                        
+                                        function 함수(animal: Fish | Bird) {
+                                          if ("swim" in animal) {
+                                            return animal.swim
+                                          }
+                                          return animal.fly
+                                        } 
+
+                          d. JS객체명.프로퍼티명(속성명) & 비교연산자(==, !=)
+                              : (중요) JS 객체 내부 속성(프로퍼티)에 리터럴 자료형(objective Literal types)을 사용하는 경우, Type Narrowing(자료형 좁히기)를 통한 조건문 작성에 있어 큰 도움이 될 수 있음
+                                  -> 사용자 정의를 통해 만들어진 자료형은 typeof 연산자를 통해 자료형을 도출해봐야 object 타입으로만 나오기 때문..
+                                  -> '속성명(property)' in 변수명을 쓰기에, 비슷한 명칭의 프로퍼티명(속성명)들을 가지는 JS객체 리터럴들이 많은 경우, Narrowing 처리하기 힘든 경우가 발생할 수도 있기 때문
+
+                                      ex) Car나 Bike라는 JS객체 리터럴 자료형들은 wheel과 color라는 속성을 둘 다 가지고 있어서.. 자료형을 Narrowing하여 경우에 따라 함수의 전개를 다르게 하려는 경우 in 연산자는 도움이 안됨
+                                           -> 이런 경우에 wheel 속성들을 JS객체 리터럴 별로 리터럴 자료형(literal type)을 부여하여, parameter로 들어오는 녀석의 자료형이 무엇인지를 wheel의 값과 자료형을 조건문에 넣어 판별 가능
+                                      
+                                          type Car = {
+                                            wheel : '4개', 
+                                            color : string
+                                          }
+
+                                          type Bike = {
+                                            wheel : '2개',
+                                            color : string
+                                          }
+
+                                          function 함수(x : Car | Bike){
+                                            if (x.wheel === '4개'){
+                                              console.log('the car is ' + x.color)
+                                            } else {
+                                              console.log('the bike is ' + x.color)
+                                            }
+                                          }
+
+                       @ falsy 값 개념
+                          : false와 유사한 기능을 하는 null, undefined, NaN 이런 값들을 의미
+                             
+                             - falsy값과 비교 연산자(==, !=, <> , <=>)
+                                : 해당 null, undefined, NaN값들은 엄격한 === 연산자를 쓰는게 아니면, 비교 연산자로 비교시 자동 형변환을 통해 같은 계열로 인식
+                             
+                             - falsy값과 논리 연산자(&&, ||) 
+                                : 논리 연산자와 연관된 해당 null, undefined, NaN값들은 false값과 동일한 것으로 인정됨
+
+                       @ null & undefined 체크하는 코드 1줄로 줄일 때 사용가능한 문법들
+
+                         a. optional chaining 문법 구조체(syntax construct) 사용
+                            -> (주의) 조건식에 어떤 js객체의 '프로퍼티'가 들어갈 때에 사용이 가능
+
+                                ex) let 제목 = document.querySelector('#title');
+
+                                    if (제목?.innerHTML != undefined) {
+                                      제목.innerHTML = '반갑소'
+                                    }
+                         
+                         b. 논리 연산자 && 사용
+
+                            ex) function printAll(strs: string | undefined) {
+                                  if (strs && typeof strs === "string") {  
+                                    console.log(s);
+                                  } 
+                                }
+
+                            ex) let 제목 = document.querySelector('#title');
+                         
+                                if (제목 != null && 제목.innerHTML != undefined) {
+                                  제목.innerHTML = '반갑소'
+                                }
+
+                         c. 3항연산자 문법 사용
+
+                            ex) function printAll(strs: string | undefined) {
+                                  if (strs? typeof strs === "string") {  
+                                    console.log(s);
+                                  } 
+                                }
+
+                            ex) let 제목 = document.querySelector('#title');
+                         
+                                if (제목? 제목.innerHTML != undefined) {
+                                  제목.innerHTML = '반갑소'
+                                }
+
+                       @ optional chaining 문법 구조체(syntax construct) '변수?.'
+                          : 대상 '변수' or '객체' or '멤버변수'가 null이나 undefined이면? boolean값에 따라 값이 달라짐 (3항 연산자랑 유사하나 다름)
+                             -> true : undefined 반환하고, 후속 멤버변수 체이닝 접근 중단 (= 더 깊게 가서 null 에러 내지 않게 도와줌)
+                             -> false :해당 '변수'나 '멤버변수'의 값 
+               
+                                ex) let user = null;
+                                    alert( user && user.address && user.address.street );  // 과거에는 &&사용, 문제 있으면 undefined에서 중단
+                                    alert( user? user.address? user.address.street : undefined : undefined;
+                                    alert( user?.address );                                // undefined에서 마무리되고, address 멤버변수는 보지도 않음
+                                    alert( user?.address.street );                         // undefined
+               
+                                ex) 이벤트리스너 부여하는것 또한, optional chaining 문법을 응용할 수 있음
+               
+                                    let 버튼 = document.getElementById('button');
+               
+                                    버튼?.addEventListener('click', function(){
+                                      console.log('안녕')
+                                    }) 
+
 
                   2) Type Assertion(자료형 단언하기) 방식 사용
                       : '변수명 as 자료형' 구문으로 '해당 변수의 자료형은 정확히 무엇이라고 주장한다'는 의미를 TypeScript에 단서 제공
@@ -713,9 +1103,6 @@
                3) 확장을 위한 extend, class로의 구현을 위한 implements
                    -> interface    : 가능
                    -> Type Aliases : 불가능
-
-               4)
-            
 
          # 인터페이스(interface) 선언 & 자료형으로 사용하는 문법
             1) 사용자 정의 JS객체(object) 리터럴 형식 인터페이스(interface)
@@ -910,7 +1297,6 @@
                  : interface를 자료형으로 받는 JS객체 리터럴을 저장하는 변수의 경우, '&' 연산자를 사용하면 2개의 interface를 동시상속 확장하여 extends 선언된 interface를 자료형을 받는듯한 효과를 얻을 수 있음
                     -> (중요!) '&'를 통한 유사 2중 동시상속 또한 extends와 비슷하기에, 인터페이스명1과 인터페이스명2의 '프로퍼티(멤버변수, 메서드)'를 중복해서 가지고 있으면? 짤 없이 에러남
 
-
                         ex) interface Student와 Teacher의 모든 프로퍼티를 가지는 interface 자료형을 참고한 JS객체 리터럴의 참조값을 가지는 '교직원'라는 이름의 변수
                              -> (참고) 복수의 인터페이스 동시 확장할 때 쓰는 interface 인터페이스명 extends 인터명1, 인터명2;를 통해서도 비슷한걸 구현 가능
                                  -> (중요!) 역시! 언급된 interface의 모든 프로퍼티가 들어가야 에러가 안 생김
@@ -925,8 +1311,8 @@
                                      
                                      let 교직원 : Student & Teacher = { name : 'kim', age : 90 }
  
-                   @ Intersection Type (교차 타입) ( & )
-                       : TypeScript에서 AND을 의미하는 연산자로 '&' 기호, 
+                   @ Intersection Type (교차 타입) '&'
+                       : TypeScript에서 AND을 의미하는 연산자로 '&' 기호를 통해 extends를 사용하는 효과를 낼 수 있음
 
 
  - TypeScript로 HTML을 조작할 시 에러나면 주의할 사항
@@ -961,7 +1347,7 @@
               @ (주의) 대부분의 DOM셀렉터는 HTMLElement나 Element를 자료형으로 가지지만, a태그 div, span 등의 태그는 고유의 자료형을 가질 수 있으니 이를 주의해야함
                  -> TypeScript의 DOM 자료형 부분 참고
      
-          (3) '변수?.' or '&&를 통한 AND 조건' or '3항연산자'를 narrow 조건에 사용
+          (3) 옵셔널 체이닝 '변수?.' or '&&를 통한 AND 조건' or '3항연산자'를 narrow 조건에 사용하여 null체크를 더 확실히 하기
      
               ex) let 제목 = document.querySelector('#title');
      
@@ -969,6 +1355,14 @@
                     제목.innerHTML = '반갑소'
                   }
      
+                  if (제목 != null && 제목.innerHTML != undefined) {
+                    제목.innerHTML = '반갑소'
+                  }
+
+                  if (제목? 제목.innerHTML != undefined) {
+                    제목.innerHTML = '반갑소'
+                  }
+
               @ optional chaining 문법 구조체(syntax construct) '변수?.'
                  : 대상 '변수' or '객체' or '멤버변수'가 null이나 undefined이면? boolean값에 따라 값이 달라짐 (3항 연산자랑 유사하나 다름)
                     -> true : undefined 반환하고, 후속 멤버변수 체이닝 접근 중단 (= 더 깊게 가서 null 에러 내지 않게 도와줌)
