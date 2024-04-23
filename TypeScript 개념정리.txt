@@ -137,6 +137,8 @@
 
             1) 기본 자료형(= primitive types)
                 : 선언된 변수에 실제 값이 저장되는 자료형 (단, string은 참조 자료형이지만, 기본처럼 쓰임)
+
+                 @ 기본 자료형(= primitive types) 종류
                    - string    : '문자열'만 변수에 허용         ex) let initial : string = 'lsh';
                    - number    : '숫자'만 변수에 허용           ex) let age : number = 30;
                    - boolean   : true, false 만 변수에 허용     ex) let isAdult : boolean = true;
@@ -153,102 +155,145 @@
                    A. 배열(Array)
                        : 특정 자료형의 '배열' 형식만 변수에 허용
 
-                         - 타입명[]      : 특정 '자료형'만 허용하는 '배열' 1    ex) let num : number[] = [1,2,3];
-                         - Array<타입명> : 특정 '자료형'만 허용하는 '배열' 2    ex) let week2 : Array<string> = ['mon', 'tues', 'weds']; 
+                        @ 배열(Array) 자료형 작성법 
+                          - 타입명[]      : 특정 '자료형'만 허용하는 '배열' 1    ex) let num : number[] = [1,2,3];
+                          - Array<타입명> : 특정 '자료형'만 허용하는 '배열' 2    ex) let week2 : Array<string> = ['mon', 'tues', 'weds']; 
 
-                   B. 사용자 지정 JS객체(Object literal Type)
+                   B. 튜플 (Tuple)
+                       : 배열의 index마다 들어갈 요소의 자료형이 각각 '자료형'으로 정확히 정해져 있는 특수한 '배열'의 자료형
+
+                        @ 튜플 (Tuple) 자료형 작성법 
+
+                           - [타입명1, ... , 타입명N] : 각 index마다 특정 '자료형'들만 허용하는 '배열'
+                           
+                              ex) let tuple : [string, number] = ['z', 1];
+  
+                           - [타입명1, ...타입명[]]   : 각 index마다 특정 '자료형'들만 허용하나, 일정 이후로는 일정한 자료형만 허용하는 '배열'     
+  
+                              ex) let arr2 :[number, number, ...number[]] = [4,5,6,7,8,9,10]
+  
+                              ex) 스프레드 연산자(Spread operator)를 적용한 배열에도 튜플 (Tuple) 자료형은 사용 가능
+                              
+                                  let arr = [1,2,3]
+                                  let arr2 :[number, number, ...number[]] = [4,5, ...arr]  
+                       
+                        @ (참고) 튜플 (Tuple) 관련 개념들
+
+                           a. '?'를 연산자를 사용하여, 각 index에 값이 들어가지 않아도 되게 할 수도 있음
+                               -> BUT! 필수값들이 먼저 앞쪽 index에 다 배치되어야 가능
+
+                                  ex) type Num = [number, number?, number] (X)  
+                                      type Num = [number, number, number?] (O)   
+
+                           b. 함수(function) {} 내부에서 배열(array)로 인식하는 rest parameter를 사용하는 함수(function)의 자료형을 표기하는데 응용이 가능함
+
+                              ex) function 함수(...x : [string, number , ...string[]] ){
+                                    console.log(x)
+                                  }
+                              
+                                  함수('kim', 123)       //에러
+                                  함수('kim', 123, 456)  //에러
+                                  함수('kim', 'park')    //에러
+                                  함수('kim', 'park', 'morla', 'oops')    // 가능
+
+                   C. 사용자 지정 JS객체 리터럴(Object literal Type)
                        : {}안에 개별 멤버변수(property)들의 자료형이 선언된 'JS객체 리터럴' 형식만 변수에 허용
 
-                          @ (참고) 리터럴(literal) 관련 개념들
-                            1. 리터럴(literal)
-                               : 사람이 이해할 수 있는 문자나 약속된 기호를 사용해 값을 생성하는 표기법   
+                         @ (참고) 리터럴(literal) 관련 개념들
 
-                            2. (중요!) 객체 리터럴 자료형(object literal type)과 여기서 말하는 리터럴 자료형(literal type)은 개념적으로 거의 상관관계가 없다봐도 무방함
-                               : 리터럴 타입은 특정 값에 대한 제약을 주는 데 사용되고, 객체 리터럴 타입은 객체의 구조를 정의하고 검증하는 데 사용됩니다.
-                                   -> JS객체 리터럴 자료형(object literal type)
-                                       : TypeScript에서 JS객체의 '구조'를 정의하는 데이터 자료형을 의미
+                           a. 리터럴(literal)
+                              : 사람이 이해할 수 있는 문자나 약속된 기호를 사용해 값을 생성하는 표기법   
 
-                                   -> 리터럴 자료형(literal type) 
-                                       : 문자열, 숫자, 불리언 중에서도 특정한 값이 자료형 그 자체로 '제약'되는 경우의 자료형을 의미
+                           b. (중요!) 객체 리터럴 자료형(object literal type)과 여기서 말하는 리터럴 자료형(literal type)은 개념적으로 거의 상관관계가 없다봐도 무방함
+                              : 리터럴 타입은 특정 값에 대한 제약을 주는 데 사용되고, 객체 리터럴 타입은 객체의 구조를 정의하고 검증하는 데 사용됩니다.
+                                 -> JS객체 리터럴 자료형(object literal type)
+                                     : TypeScript에서 JS객체의 '구조'를 정의하는 데이터 자료형을 의미
 
-                         - 객체명 : { 멤버변수1 : 자료형 , ... , 멤버변수n : 자료형} = { 멤버변수1 : 값1 , ... ,  멤버변수n : 값n}
-                             : 멤버변수들에 직접 자료형을 대입한 무명의 JS객체 리터럴(object literal) 형식 자료형을 직접 기입, 그에 맞는 값들을 즉석에서 대입
-                                -> BUT! 가독성이나, 관리 측면이나 좋을게 1도 없으니 비추 
-            
-                                   ex) let teacher : {
-                                         name : string,
-                                         age : number
-                                       } = { name : 'john', age : 20 } 
-            
-                         - Type Aliases(별칭) 문법으로 JS객체 형식 미리 정의
-                            : Type Aliases(별칭) 문법을 사용하여, 사용자 지정 객체 자료형을 별명으로 생성한 뒤, 그 별칭을 JS객체 리터럴(object literal)형식의 자료형으로 선언
-                               -> 2번의 Type Aliases(별칭) 기능 참고!
-                              
-                                   ex) 상단의 예시와 유사하나, 객체명 : {객체} 부분을 Type Aliases(별칭) 문법으로 '사람'이란 자료형 별칭으로 선언하여 이를 자료형으로 사용했다는게 다름
-                                   
-                                       type 사람 = {
-                                         name : string,
-                                         age : number
-                                       }
-            
-                                       let teacher : 사람 = { name : 'john', age : 20 } 
+                                  -> 리터럴 자료형(literal type) 
+                                      : 문자열, 숫자, 불리언 중에서도 특정한 값이 자료형 그 자체로 '제약'되는 경우의 자료형을 의미
 
-                         - interface(인터페이스) 문법으로 JS객체 형식 미리 정의
-                            : interface(인터페이스) 문법을 사용하여 JS객체의 구조를 추상화하고 나면, 인터페이스명을 JS객체 리터럴(object literal)형식의 자료형으로 선언
+                         @ 튜플 (Tuple) 자료형 작성법 
 
-                              ex) Type Aliases(별칭) 문법으로 '사람'이란 자료형 별칭을 만든것과 유사하나?
-                                   -> interface 문법은 확장 측면에서, Type Aliases(별칭)보다 더 유연하고 어떤 변수에 리터럴 객체, 함수, 클래스를 주는 경우에 한해서 범용성이 높다는 장점이 존재함
-                                      (3번의 interface(인터페이스) 기능 참고!)
-                              
-                                      interface 사람 = {
-                                        name : string,
-                                        age : number
-                                      }
-                
-                                      let teacher : 사람 = { name : 'john', age : 20 } 
+                            - 객체명 : { 멤버변수1 : 자료형 , ... , 멤버변수n : 자료형} = { 멤버변수1 : 값1 , ... ,  멤버변수n : 값n}
+                                : 멤버변수들에 직접 자료형을 대입한 무명의 JS객체 리터럴(object literal) 형식 자료형을 직접 기입, 그에 맞는 값들을 즉석에서 대입
+                                   -> BUT! 가독성이나, 관리 측면이나 좋을게 1도 없으니 비추 
+               
+                                      ex) let teacher : {
+                                            name : string,
+                                            age : number
+                                          } = { name : 'john', age : 20 } 
+               
+                            - Type Aliases(별칭) 문법으로 JS객체 형식 미리 정의
+                               : Type Aliases(별칭) 문법을 사용하여, 사용자 지정 객체 자료형을 별명으로 생성한 뒤, 그 별칭을 JS객체 리터럴(object literal)형식의 자료형으로 선언
+                                  -> 2번의 Type Aliases(별칭) 기능 참고!
+                                 
+                                      ex) 상단의 예시와 유사하나, 객체명 : {객체} 부분을 Type Aliases(별칭) 문법으로 '사람'이란 자료형 별칭으로 선언하여 이를 자료형으로 사용했다는게 다름
+                                      
+                                          type 사람 = {
+                                            name : string,
+                                            age : number
+                                          }
+               
+                                          let teacher : 사람 = { name : 'john', age : 20 } 
+   
+                            - interface(인터페이스) 문법으로 JS객체 형식 미리 정의
+                               : interface(인터페이스) 문법을 사용하여 JS객체의 구조를 추상화하고 나면, 인터페이스명을 JS객체 리터럴(object literal)형식의 자료형으로 선언
+   
+                                 ex) Type Aliases(별칭) 문법으로 '사람'이란 자료형 별칭을 만든것과 유사하나?
+                                      -> interface 문법은 확장 측면에서, Type Aliases(별칭)보다 더 유연하고 어떤 변수에 리터럴 객체, 함수, 클래스를 주는 경우에 한해서 범용성이 높다는 장점이 존재함
+                                         (3번의 interface(인터페이스) 기능 참고!)
+                                 
+                                         interface 사람 = {
+                                           name : string,
+                                           age : number
+                                         }
+                   
+                                         let teacher : 사람 = { name : 'john', age : 20 } 
 
-                   C. 클래스(class)
+                   D. 클래스(class)
                        : 특정 class의 생성자 함수를 통해 생성된 'JS객체 형식'만 변수에 허용
                          (사실 특정 class 생성자를 쓰는 순간, TypeScript 컴파일러는 눈치것 알아먹음)
 
-                         - class 클래스명 {
-                             멤버변수1 : 자료형;
-                             ...
-                             멤버변수n : 자료형;
+                         @ 클래스(class) 자료형 작성법
+
+                            - class 클래스명 {
+                                멤버변수1 : 자료형;
+                                ...
+                                멤버변수n : 자료형;
    
-                             constructor(parameter1 : 자료형, ... , parameterN : 자료형){
-                               this.멤버변수1 = parameter1;
-                               ...
-                               this.멤버변수n = parameterN;
-                             }
-                           
-                             메서드명(parameter1 : 자료형, ... , parameterN : 자료형) : 자료형{
-                               return 내용;
-                             }
-                           }
+                                constructor(parameter1 : 자료형, ... , parameterN : 자료형){
+                                  this.멤버변수1 = parameter1;
+                                  ...
+                                  this.멤버변수n = parameterN;
+                                }
+                              
+                                메서드명(parameter1 : 자료형, ... , parameterN : 자료형) : 자료형{
+                                  return 내용;
+                                }
+                              }
 
-                           ex) Car라는 클래스 형식의 JS객체의 설계도는, string 자료형의 model , number 자료형의 price를 가지고
-                                -> 그 멤버변수를 가공하는 메서드 persentage라는 number를 파라미터로 넣고 number를 반환하는 tax라는 메서드가 존재함
-                           
-                                   class Car {
-                                     model : string;
-                                     price : number;
+                              ex) Car라는 클래스 형식의 JS객체의 설계도는, string 자료형의 model , number 자료형의 price를 가지고
+                                   -> 그 멤버변수를 가공하는 메서드 persentage라는 number를 파라미터로 넣고 number를 반환하는 tax라는 메서드가 존재함
+                              
+                                      class Car {
+                                        model : string;
+                                        price : number;
       
-                                     constructor(a :string, b :number){
-                                       this.model = a;
-                                       this.price = b;
-                                     }
-                                   
-                                     tax(persentage : number) : number{
-                                       return this.price * persentage;
-                                     }
-                                   }
+                                        constructor(a :string, b :number){
+                                          this.model = a;
+                                          this.price = b;
+                                        }
+                                      
+                                        tax(persentage : number) : number{
+                                          return this.price * persentage;
+                                        }
+                                      }
 
-                                   let car1 = new Car('소나타', 3000);                <-  class 생성자로 만들어진 객체를 담는 변수는 자료형 추론되니까 '자료형'을 적지 않아도 됨
-                                   let car2 : Car = {model : 소나타', price : 3000};  <-  (중요) class를 자료형으로 지정하고 JS객체 리터럴로 이를 생성하는건 TS는 받아주는데, JS가 안 받아주니 쓰지 말자
+                                      let car1 = new Car('소나타', 3000);                <-  class 생성자로 만들어진 객체를 담는 변수는 자료형 추론되니까 '자료형'을 적지 않아도 됨
+                                      let car2 : Car = {model : 소나타', price : 3000};  <-  (중요) class를 자료형으로 지정하고 JS객체 리터럴로 이를 생성하는건 TS는 받아주는데, JS가 안 받아주니 쓰지 말자
 
                           @ (중요) 자식class extends 부모class
-                             : extends는 class 상속을 구현하기 위한 문법으로, 부모class를 상속받은 자식class는 부모의 모든 프로퍼티와 메서드를 가지게 됨 
+                             : extends는 class 상속을 구현하기 위한 문법으로, 부모class를 상속받은 자식class는 부모의 모든 프로퍼티와 메서드를 가지게 됨(is개념) 
                                (= extends 쓰는 순간, 해당 class는 부모class의 모든 프로퍼티 또한 연관이 되어있다고 보면 됨)
 
                                   ex) 접근제한자 protected와 extends를 사용한 자식 class NewUser
@@ -268,8 +313,9 @@
                               0. class를 설계할 때부터, 내부 멤버변수, 메서드(method), 생성자 함수(constructor)에 직접 자료형을 설정해야 함
                                   -> (참고) JS의 class는 객체지향언어의 느낌으로 JS객체를 다룰 수 있도록 만들어진 개념.. 상속까지 가면 결국 JS의 protoType 개념에 따른 상속의 다른 표현이라 보면 됨 
 
-                              1. interface(인터페이스)를 생성하고 implements 키워드와 조합하면, class implements '인터페이스명'으로 interface를 구현시키는 방향으로 class 설계의 완성도를 높알 수 있음
-                                 -> 3번의 interface(인터페이스) 기능 참고!
+                              1. interface(인터페이스)를 생성하고 implements 키워드와 조합하면, class implements '인터페이스명'으로 interface를 구현시키는 방향으로 class 설계의 완성도를 높일 수 있음
+                                  -> BUT! implements 키워드는 대상 class가 interface의 프로퍼티들의 자료형을 가지는지(have개념)를 체크만 해주는 용도지, 강제로 할당하는게 아님을 명심 (= 프로퍼티나 자료형들이 잘 반영되었나 checking용)
+                                      -> 3번의 interface(인터페이스) 기능 참고!
 
                               2. 메서드(method)는 해당 class와 class를 기반으로 만들어진 JS객체의 prototype에 추가
                                   -> class 클래스명() { 메서드() {~~} }  == 클래스명.protoType.메서드 = function(){~~}
@@ -291,8 +337,6 @@
                               8. typescript 또한 '접근제한자(public, private, protect)'와 static 키워드를 사용가능하나, 반드시 class 선언시 그 내부의 프로퍼티들에만 사용이 가능함 
                                   -> 6번의 '접근제한자(public, private, protect)'와 7번의 'static' 키워드 참고
                               
-
-
                               10. JS에서는 class내부에 멤버변수가 없어도, 생성자 함수나 메서드에 this에 대한 지정이 동적으로 변할 수 있기에 'this.변수명' 사용에 별 지정 없음
                                    -> BUT! TS에서는 생성자 함수나 메서드 내부에 쓰인 this는 class를 의미하기에, 반드시 this.변수명을 쓸거면 멤버변수로 해당 변수명을 선언해야 함
     
@@ -564,11 +608,14 @@
                           let 가나다 : NumOut = (x,y) => return x + y;
 
          # Type Aliases(별칭) 문법 사용시 주의사항
-            : Type Aliasese 문법으로 선언된 '타입별칭명'은 다른 변수들처럼 '재정의'가 불가능함
+            1. Type Aliasese 문법으로 선언된 '타입별칭명'은 다른 변수들처럼 '재정의'가 불가능함
                -> BUT! interface 자료형을 사용한다면 변경이 가능함
                  
                    ex) type Name = string;
                        type Name = number;   <- 일반 변수들처럼 타입별칭명도 같은 이름으로 재정의 불가능함
+
+            2. 제너릭스(Generics) 문법과 함께라면, 3항연산자를 통한 narrowing으로 자료형을 좀 더 동적으로 주는거도 가능함 
+                -> 8. 제너릭스(Generics) 참고
 
          # (중요!) Type Aliases(별칭)와 연관된 연산자
 
@@ -605,6 +652,7 @@
                   @ Intersection Type (교차 타입) ( & )
                       : TypeScript에서 AND을 의미하는 연산자로 '&' 기호, 
                           -> 이를 통해 특정 변수가 참조하는 자료형에 AND조건을 가미하여, 다양한 임의 자료형으로 조합하여 선언이 가능함
+
 
     3. JS객체(class나 interface도 포함!) 자료형의 내부 멤버들의 상수화 기능
         : const는 변수에 원시 자료형이 들어가면, 상수화를 잘 유지하나.. 객체의 멤버변수에는 해당이 안된다는 슬픈 전설이 있음
@@ -944,6 +992,13 @@
                                           return animal.fly
                                         } 
 
+                          d. ReturnType<자료형 사용 코드>
+                              : 제네릭 위치에 들어간 코드에서 '자료형'을 추출해 유추하는 함수
+                                     
+                                ex) 제네릭 위치에 들어간 () => number에서 number만 추출
+                                
+                                    type NewType = ReturnType< () => number >     // number
+
                           d. JS객체명.프로퍼티명(속성명) & 비교연산자(==, !=)
                               : (중요) JS 객체 내부 속성(프로퍼티)에 리터럴 자료형(objective Literal types)을 사용하는 경우, Type Narrowing(자료형 좁히기)를 통한 조건문 작성에 있어 큰 도움이 될 수 있음
                                   -> 사용자 정의를 통해 만들어진 자료형은 typeof 연산자를 통해 자료형을 도출해봐야 object 타입으로만 나오기 때문..
@@ -978,6 +1033,7 @@
                              
                              - falsy값과 논리 연산자(&&, ||) 
                                 : 논리 연산자와 연관된 해당 null, undefined, NaN값들은 false값과 동일한 것으로 인정됨
+
 
                        @ null & undefined 체크하는 코드 1줄로 줄일 때 사용가능한 문법들
 
@@ -1177,7 +1233,7 @@
          # (중요) interface 내용 확장시 사용하는 extends & class 구현시 사용하는 implements 예약어
          
             1) extends
-                : 작성된 interface를 상속하여, 그 interface들에 존재하는 자료형들만 존재하는 프로퍼티와 추상 메서드들을 기반으로 다른 interface로 '확장'하는 예약어
+                : 작성된 interface를 상속(is개념)하여, 그 interface들에 존재하는 자료형들만 존재하는 프로퍼티와 추상 메서드들을 기반으로 다른 interface로 '확장'하는 예약어
 
                   @ (중요) extends 관련 주의사항
                      a. class와 다르게, interface를 선언시에는 2중 동시상속을 쓸 수 있음
@@ -1247,6 +1303,7 @@
 
             2) implements
                 : 작성된 interface를 기반으로, 그 interface들에 존재하는 자료형들만 존재하는 프로퍼티와 추상 메서드들을 기반으로 다른 class로 '구현'하는 예약어
+                   -> (중요) 정확히는 class가 interface의 프로퍼티들을 가지고(have) 있는지와 그 자료형들이 어떤 상태로 설정되었는지 체크만 해주는 용도지 할당하는게 아님을 명심
 
                   @ (중요) implements 관련 주의사항
                      a. class에다가만 사용가능
@@ -1485,6 +1542,233 @@
                (= static 메서드로는 일반 class 프로퍼티는 건들수 없고, 메서드도 static 프로퍼티를 건들 수 없음) 
                    -> 대충 깍뚜기는 깍뚜기 세계에서.. 경찰은 경찰세계에서만 산다..고 기억해라
 
+
+    8. <자료형 parameter> 형식의 제네릭스(Generics) 사용 가능
+         : 호출 시 parameter가 필요한 '함수(function)', '클래스(class)', '인터페이스(interface)' 등에서, 반환값인 return의 자료형을 어떤 녀석으로 할 건지까지도 parameter로 넣을 수 있음
+           (= 제너릭스(Generics)와 함께라면, 함수, 클래스, 인터페이스의 반환되는 값이나 객체의 자료형까지도 호출시 parameter처럼 동적으로 지정할 수 있음)
+               -> (중요!) 내부 프로퍼티 및 메서드, 그리고 함수 parameter나 return값의 자료형들을 호출 타이밍에 제각각 변경하여 호출 가능하기에 코드 작성에 있어 확장성과 유연성이 높은데, 거기에 심지어 안정적이기까지 하다!
+
+          # 제너릭스(Generics)
+             : 매개변수(parameter)화된 자료의 개념을 적용하여, 특정 참조 자료형의 또한 호출할 때 parameter처럼 동적으로 지정 가능하게 고안된 개념
+               (= 제너릭스(Generics)를 사용하면, class, fuction, interface를 선언할 때, 자료형에 대해서도 parameter처럼 기입하도록 선언 + 호출시 자료형도 parameter처럼 넣으라고 기입 가능)
+
+              @ 제너릭스(Generics) 쓰는 이유?
+                 : (중요) 제너릭스(Generics)를 쓰는 이유는 TypeScript는 형변환을 알잘딱하게 하지도 않으면서, any, unknown, union 같은 자료형은 또 따로 분류를 하기 때문
+                    -> 사용자가 알아서 호출시 자료형을 동적지정하는 방법이 있는게 좋음
+
+                        - function
+                           : 함수에 들어가는 변수의 타입이 다른 경우를 상정해야 할때, 케이스마다 일일히 오버로딩을 안해도 된다는 옵션이 성립함
+                
+                        - interface
+                           : 특정 프로퍼티의 타입을 객체마다 경우에 맞게 설정해서 쓰고 싶을때 그 구현을 쉽게 할 수 있음
+                
+                        - interface의 프로퍼티를 사용하는 function의 존재
+                           : 선언된 Generic의 가정사항을 extends를 통해 구체적인 내용을 적어서, 더 구체적이고 안전하게 런타임 에러 방지 가능
+
+          # 제너릭스(Generics)의 기원
+             : 70년~80년대의 '일반형 프로그래밍(generic programming)' 패러다임을 추구하는 과학자들에 의해 연구
+                -> 그 과정에서 추상화된 데이터 타입과 다형성과 같은 개념들도 고안됨
+                   (= 객체지향 프로그래밍(OOP)의 탄생에 기여한 셈)
+
+              @ 일반형 프로그래밍(generic programming)
+                 : 데이터 구조와 알고리즘을 어떤 정적으로 사전 작성된 자료형에 의존하지 않은 구조로 쉽게 모듈화하여 재사용할 수 있는 방법을 추구하는 패러다임
+
+
+         # 제너릭스(Generics) 문법 및 사용법
+            1) 제너릭스(Generics) 사용한 class, interface, funcition 
+
+               a. 제너릭스(Generics) 사용한 class, interface, funcition 선언
+
+                  - class 클래스명<제너릭명> { 제너릭명을 자료형으로 설정한 class 내부 프로퍼티, 생성자, 메서드 }
+                      -> interface도 유사
+   
+                      ex) class Box<T> {
+                            content: T;
+                          
+                            constructor(value: T) {
+                              this.content = value;
+                            }
+                          
+                            getContent(): T {
+                              return this.content;
+                            }
+                          }
+   
+                  - function 함수명<제너릭명>(parameter명 : 제너릭명 사용 가능) { 함수 내용부 return의 자료형에도 제너릭명 사용가능  }
+   
+                     ex) function identity<T>(arg: T): T {
+                           return arg;
+                         }
+   
+               b. 제너릭스(Generics) 사용한 class, interface, funcition 호출
+                  : (참고) 굳이 제너릭스 자리에 자료형을 입력하지 않으면, 컴파일러가 자료형을 알아서 추측하긴함... 근데 이러면 TypeScript 왜 쓰니?
+   
+                  - let 변수명 = new 클래스명<자료형>(parameter내용);
+                      : 이를 통해, 해당 클래스를 통한 인스턴스 생성시 어떤 자료형을 활용할 건지 호출시 전달 가능하고, 이를 사전에 선언된 class구조를 참고하여 적용
+                         -> interface도 유사
+   
+                            ex) 상단 Box 클래스의 인스턴스 stringBox 생성 시 클래스의 제너릭스 입력시 string을 입력하여, 사용할 자료형으로 string임을 전달
+                                 -> 호출시 제너릭스 부분에 입력한 string으로 인해, 프로퍼티의 자료형과 get메서드의 반환값, 생성자 함수의 parameter 모두가 string으로 지정
+         
+                                    let stringBox = new Box<string>("Hello");
+                                    console.log(stringBox.getContent());       // "Hello"
+         
+                            ex) 상단 Box 클래스의 인스턴스 number 생성 시 클래스의 제너릭스 입력시 number을 입력하여, 사용할 자료형으로 number임을 전달 
+                                 -> 호출시 제너릭스 부분에 입력한 number으로 인해, 프로퍼티의 자료형과 get메서드의 반환값, 생성자 함수의 parameter 모두가 number으로 지정
+         
+                                    let numberBox = new Box<number>(123);
+                                    console.log(numberBox.getContent());       // 123
+   
+                  - 함수명<자료형>(parameter명 : 제너릭명 사용 가능);
+                      : 이를 통해, 호출된 함수 내용 수행시 어떤 자료형을 활용할 건지 호출시 전달 가능하고, 이를 사전에 선언된 함수 구조를 참고하여 적용
+   
+                        ex) 상단 함수 identity 호출 과정에서 제너릭스 자리에 string을 입력하여, 사용할 자료형으로 string임을 전달
+                             -> 호출시 제너릭스 부분에 입력한 string으로 인해, 함수의 parameter와 return값 모두가 string으로 지정
+         
+                                let output = identity<string>("Hello, TypeScript!");
+                                console.log(output);    // "Hello, TypeScript!"
+
+
+            2) 제너릭스(Generics)를 사용한 사용자 정의 자료형 별칭(Type Aliases)
+                : Type Aliases를 선언할 때도 제너릭스(Generics)는 사용이 가능함
+                  (주로, JS객체 리터럴 자료형 선언에 사용)
+
+                   ex) Container라는 Type Aliases 선언시, 제너릭을 사용하여 프로퍼티 value의 자료형을 제너릭에 들어가는 자료형과 일치시킴
+                        -> stringContainer라는 변수에 대입된 JS객체 리터럴은 제네릭 자리에 string 자료형이 입력된 Container 객체 자료형의 구조를 따르게 되어 value의 자료형도 string을 따름
+                   
+                           type Container<T> = {
+                             value: T;
+                           };
+
+                           const stringContainer : Container<string> = {
+                             value: "Hello, World!",
+                           };
+
+                   ex) Pair라는 Type Aliases 선언시, 2개의 제너릭을 사용하여, 프로퍼티 first, second의 자료형을 제너릭에 들어가는 자료형 2가지와 각각 일치시킴
+                        -> objectArrayPair 변수에 대입된 JS객체 리터럴은 제네릭 자리에 name이란 string 자료형의 프로퍼티를 가진 JS객체 리터럴 자료형과, number배열 자료형이 입력된 Pair 객체 자료형의 구조를 따르게 되어 first, second도 각각 그 자료형을 따르게 됨
+                   
+                           type Pair<T, U> = {
+                             first: T;
+                             second: U;
+                           };
+                           
+                           const objectArrayPair : Pair<{ name: string }, number[]> = {
+                             first: { name: "John" },
+                             second: [1, 2, 3, 4, 5],
+                           };
+
+            3) 제너릭스(Generics)에 들어갈 자료형의 제약(constraint)조건을 의미하는 extends 키워드
+                : 제너릭스(Generics)를 선언하는 자리에서 <제너릭명 extends 서브자료형> 형식이 의미하는 건, 호출 시 제너릭스 자리에 들어올 '자료형'이 '서브자료형'을 상속받는 자료형인지 여부에 따라 boolean 값을 반환하는 일종의 연산자 역할을 함
+
+                  ex) makeAnimalSound라는 함수는 호출시 제너릭이 들어갈 자리에 Animal이라는 interface를 상속받는 자료형만 허용됨 
+                  
+                      // 동물에 대한 기본 인터페이스
+                      interface Animal {
+                        name: string;
+                        sound: () => void;
+                      }
+                      
+                      // 고양이와 개는 모두 Animal의 서브타입
+                      class Cat implements Animal {
+                        name = "Kitty";
+                        sound() {
+                          console.log("Meow");
+                        }
+                      }
+                      
+                      class Dog implements Animal {
+                        name = "Rover";
+                        sound() {
+                          console.log("Bark");
+                        }
+                      }
+                      
+                      // 제네릭에 제약을 두기 위해 extends를 사용하여, Animal의 서브타입이어야 함을 명시
+                      function makeAnimalSound<T extends Animal>(animal: T): void {
+                        console.log(`The ${animal.name} says:`);
+                        animal.sound();
+                      }
+
+                 @ extends 키워드 참고사항
+                    a. (중요) extend 키워드를 사용하면, 호출시 입력될 제네릭 자리에 입력될 자료형이 원하는 방식으로 제한되어 코드 안전성이 향상
+                    b. extend 키워드를 사용 시, 제너릭 자리에 들어온 자료형을 알잘딱하게 유추하여 서브자료형 자리에 할당해주는 infer 키워드를 사용가능함
+                        -> 주로 type Aliases를  제너릭스(Generics)와 함께 선언 시, 제너릭 자리에 들어온 자료형을 extends 연산자를 통해 조건절로 써서 3항연산자를 써서 자료형을 정할 때 많이 사용
+                            [1] array 자료형 안에 있던 자료형만 뽑고 싶을 때, infer를 통해 유추를 하게 함
+                            [2] 함수의 return 타입이 어떤 자료형인지 유추하고 싶을때 유용
+
+                        -> 실은 ReturnType<자료형 사용 코드>를 통해, 3항 연산자 쓰지도 않아도 됨
+
+                                 ex) T extends infer R
+                                      : T의 들어온 자료형을 유추해서 R자리에 집어넣어라라는 의미
+
+                                 ex) array 자료형 안에 있던 자료형만 뽑고 싶을 때, infer를 통해 유추
+                                      -> T는 number[]인데 (infer U)[]를 통해 U는 number만 뽑아옴
+                                 
+                                     // (infer U)[] 부분은 T에 배열 자료형이 들어올 때, 그 배열의 근원이 뭔지 유추하게 함
+                                     type UnpackArray<T> = T extends (infer U)[] ? U : never;
+                                     type NumberArray = number[];
+                                     type Unpacked = UnpackArray<NumberArray>; 
+
+                                 ex) 함수의 return 타입이 어떤 자료형인지 유추하고 싶을때 유용
+                                      -> T는 () => number인데 ( () => infer R )를 통해 U는 number만 뽑아옴
+                                 
+                                     // ( () => infer R ) 부분은 T에 무명함수형으로 자료형이 들어올 때, 정의부의 있는 자료형을 추출하는 식으로 자료형을 유추하게 함
+                                     type 타입추출<T> = T extends ( () => infer R ) ? R : unknown; 
+                                     type NewType = 타입추출< () => number >
+ 
+                                 ex) ReturnType<자료형 사용 코드>으로 3항연산자 없이도 자료형을 뽑을 수 있음
+                                     
+                                     type NewType = ReturnType< () => number >     // number
+
+          # 제너릭스(Generics) 장점
+             1) 안전성
+                 : TypeScript 컴파일러가 JS로 컴파일하는 과정에서 자료형 검사를 통해 오류를 방지해게 함
+
+             2) 유연성
+                 : (동적으로 자료형을 지정 가능하기에) 특정 자료형에 종속되지 않고, 여러 타입을 수용 가능
+
+             3) 재사용성(모듈화)
+                 : 제너릭스(Generics)를 적용한 함수, 클래스, 인터페이스를 1번 작성하면 모듈화가 적용되기에, 추후 오버로딩 노가다 할 필요없이 여러 자료형을 적용한 버전으로 쉽게 재사용 가능
+
+          # 제너릭스(Generics) 특징
+             1) 굳이 제너릭스 자리에 자료형을 입력하지 않으면, 컴파일러가 자료형을 알아서 추측하긴 함... 
+             2) 제너릭스(Generics)는 type Aliases를 선언할 때도 사용이 가능함
+             3) (중요!) 제너릭스(Generics) 문법에서 extends는 상속과 연관되어 있으나, 상속여부에 따른 true, false를 반환하는 연산자로서 역할을 수행함
+                  -> '자료형1 extends 자료형2'는 조건문의 조건으로서도 사용이 가능!
+                     (= type Aliases나 interface 확장, class 선언 등에서 제너릭 자리에 들어온 자료형에 따라, 강제로 자료형은 변경시키는데 사용이 가능함) 
+
+             4) (중요!) 제너릭스(Generics) 문법에서 extends를 사용할시, infer키워드를 한정적으로 사용이 가능함
+                  -> 주로 type Aliases를  제너릭스(Generics)와 함께 선언 시, 제너릭 자리에 들어온 자료형을 extends 연산자를 통해 조건절로 써서 3항연산자를 써서 자료형을 정할 때 많이 사용 
+
+             5) 제너릭스 자리에 선언하는 자료형 parameter는 자유롭게 제너릭명을 작명 가능함
+                 -> 보통 <T> 와 같이 작명해서 선언 많이 함 
+
+             6) (중요) 동적으로 자료형을 지정할 수 있는 제너릭스(Generics)를 사용해도, 그 제너릭스 자료형으로 지정한 변수에서 특정 자료형에서만 적용이 가능한 연산자와 같은 케이스가 등장한다면, 컴파일러는 검열하여 에러를 보여줌
+                 -> 이와 같이 특정 자료형에서만 통용이 가능한 경우라면..
+                     a. 해당 영역은 제너릭스로 제시된 자료형을 쓰지 못하게 작성
+                     b. narrowing을 해서 호출시 입력 가능한 값을 특정 자료형으로만 들어오도록 제한시키는게 나음
+
+                        ex) x - 1이라는 연산은 x라는 변수가 어떤 자료형임에 따라 내용이 달라지거나, 실행자체가 불가능하니 에러를 유발
+                             -> a방법이면, {}내부에 MyType의 자료형에 따라 조건문으로 narrowing처리를 하거나
+                             -> b방법이면, <MyType>으로 적힌 제너릭스를 안 쓰고, x라는 parameter의 자료형을 number로 고정시키는 식
+                        
+                                function 함수<MyType>(x: MyType) {
+                                  return x - 1
+                                }
+    
+                                let a = 함수<number>(100);     // 에러 유발
+
+             7) (중요!) <제너릭명1, ... , 제너릭명n> 과 같이, 다른 parameter들 처럼 2개 이상 넣기도 가능
+                 -> {}안에서 제너릭명들의 적용을 디테일하게 하면 됨
+
+                    ex) 두 개의 제네릭 타입을 사용하여 사전을 생성하는 함수 createDictionary를 호출, 문자열을 키로 하고 숫자를 값으로 하는 사전 생성
+
+                        function createDictionary<K, V>(key: K, value: V): { key: K; value: V } {
+                          return { key, value };
+                        }
+                        
+                        const stringKeyNumberValue = createDictionary<string, number>("age", 30);
+                        
 
  - TypeScript에서 ES6 이후 등장한 JS의 모듈 시스템 import & export를 통해 만든 타입변수를 다른 파일에서 사용하는 요령
     : 자세한 이야기는 JS모듈 시스템을 참고
